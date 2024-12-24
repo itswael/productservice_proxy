@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ProductserviceProxyApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ProductserviceProxyApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ProductserviceProxyApplication.class, args);
+    }
 
 }

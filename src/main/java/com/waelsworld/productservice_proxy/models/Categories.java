@@ -1,4 +1,16 @@
 package com.waelsworld.productservice_proxy.models;
 
-public class Categories {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class Categories extends BaseModel {
+    private String name;
+    private String description;
+    private List<Product> productList;
 }
