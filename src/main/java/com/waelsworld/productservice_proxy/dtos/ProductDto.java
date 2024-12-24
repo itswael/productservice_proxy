@@ -6,11 +6,13 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
+@ToString()
 public class ProductDto {
+    private Long id;
     private String title;
     private double price;
     private String description;
     private String categories;
     private String imageUrl;
+    private RatingDto rating;
 }
