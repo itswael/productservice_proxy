@@ -1,13 +1,16 @@
 package com.waelsworld.productservice_proxy.services;
 
 import com.waelsworld.productservice_proxy.dtos.ProductDto;
+import com.waelsworld.productservice_proxy.models.Product;
+
+import java.util.List;
 
 public interface IProductService {
-    String getAllProducts();
+    List<Product> getAllProducts();
 
-    String getSingleProduct(Long id);
+    Product getSingleProduct(Long id);
 
-    String addNewProduct(ProductDto productDto);
+    Product addNewProduct(ProductDto productDto);
 
     String updateProduct(Long id);
 

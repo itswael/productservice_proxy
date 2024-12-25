@@ -1,9 +1,15 @@
 package com.waelsworld.productservice_proxy.controllers;
 
 import com.waelsworld.productservice_proxy.dtos.ProductDto;
+import com.waelsworld.productservice_proxy.models.Product;
 import com.waelsworld.productservice_proxy.services.IProductService;
-import com.waelsworld.productservice_proxy.services.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //this controller will always answer products
 @RestController
@@ -21,21 +27,35 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public String getAllProducts(){
-        return "all products";
+    public ResponseEntity<List<Product>> getAllProducts(){
+        return new ResponseEntity<>(this.productService.getAllProducts(),HttpStatus.OK);
     }
     /*
     getting a string object returned from the service and returning to the caller.
      */
     @GetMapping("/{productId}")
-    public String getSingleProduct(@PathVariable("productId") Long productId){
-        String product = productService.getSingleProduct(productId);
-        return "single product with id: "+product;
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("productId") Long productId){
+        try {
+            MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
+            headers.add("Accept", "application/json");
+            headers.add("Content-Type", "application/json");
+            Product product = this.productService.getSingleProduct(productId);
+            return new ResponseEntity<>(product,headers, HttpStatus.OK);
+        }catch (Exception e){
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
+    /*
+    -> updated the return type to ResponseEntity<product>.
+    Response entity contains, data + httpStatus + headers.
+    -> To add headers, we use MultiValueMap<String, String> <- LinkedMultiValueMap<>()
+     */
+
     @PostMapping()
-    public String addNewProduct(@RequestBody ProductDto productDto){
-        return "new product added " + productDto;
+    public ResponseEntity<Product> addNewProduct(@RequestBody ProductDto productDto){
+        Product product = this.productService.addNewProduct(productDto);
+        return new ResponseEntity<>(product,HttpStatus.OK);
     }
 
     @PutMapping("/{productId}")
