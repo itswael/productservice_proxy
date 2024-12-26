@@ -67,4 +67,10 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(@PathVariable("productId") long productId){
         return new ResponseEntity<>(this.productService.deleteProduct(productId), HttpStatus.OK);
     }
+
+    @GetMapping( "/categories")
+    public ResponseEntity<List<String>> getAllCategories(){
+        List<String> categories = productService.getAllCategories();
+        return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
 }

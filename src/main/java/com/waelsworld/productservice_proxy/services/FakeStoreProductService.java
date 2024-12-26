@@ -39,5 +39,10 @@ public class FakeStoreProductService implements IProductService {
         return fakeStoreClient.deleteProduct(id);
     }
 
+    @Override
+    public List<String> getAllCategories() {
+        return fakeStoreClient.getAllCategories();
+    }
+
 
 }

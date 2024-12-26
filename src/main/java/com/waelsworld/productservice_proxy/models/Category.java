@@ -9,8 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Categories extends BaseModel {
+public class Category extends BaseModel {
     private String name;
-    private String description;
-    private List<Product> productList;
+    //private String description;
+    //private List<Product> productList;
 }

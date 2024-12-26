@@ -1,6 +1,7 @@
 package com.waelsworld.productservice_proxy.clients.fakestore.client;
 
 import com.waelsworld.productservice_proxy.clients.fakestore.dto.FakeStoreProductDto;
+import com.waelsworld.productservice_proxy.models.Category;
 import com.waelsworld.productservice_proxy.models.Product;
 import com.waelsworld.productservice_proxy.util.FakeStoreProductUtil;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -21,9 +22,9 @@ import java.util.Objects;
 @Component
 public class FakeStoreClient {
     /*
-RestTemplateBuilder helps in getting a json mapped to an object
-reference variable and a constructor is created, instantiation will be done by spring
- */
+    RestTemplateBuilder helps in getting a json mapped to an object
+    reference variable and a constructor is created, instantiation will be done by spring
+     */
     RestTemplateBuilder restTemplateBuilder;
     public FakeStoreClient(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplateBuilder = restTemplateBuilder;
@@ -88,8 +89,23 @@ reference variable and a constructor is created, instantiation will be done by s
 
     public String deleteProduct(Long id) {
         RestTemplate restTemplate = restTemplateBuilder.build();
-        restTemplate.delete("https://fakestoreapi.com/products", id);
+        restTemplate.delete("https://fakestoreapi.com/products/{id}", id);
         return id.toString();
     }
 
+    public List<String> getAllCategories() {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        ResponseEntity<String[]> responseEntity = restTemplate.getForEntity("https://fakestoreapi.com/products/categories", String[].class);
+        return List.of(Objects.requireNonNull(responseEntity.getBody()));
+    }
+
+    public List<Product> getSingleCategory(String categoryName) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        ResponseEntity<FakeStoreProductDto[]> responseEntity  = restTemplate.getForEntity("https://fakestoreapi.com/products/category/{categoryName}", FakeStoreProductDto[].class, categoryName);
+        List<Product> products = new ArrayList<>();
+        for (FakeStoreProductDto fakeStoreProductDto : Objects.requireNonNull(responseEntity.getBody())) {
+            products.add(FakeStoreProductUtil.getProduct(fakeStoreProductDto));
+        }
+        return products;
+    }
 }

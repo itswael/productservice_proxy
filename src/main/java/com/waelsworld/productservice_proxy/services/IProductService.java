@@ -14,4 +14,6 @@ public interface IProductService {
     Product updateProduct(Product product, Long id);
 
     String deleteProduct(Long id);
+
+    List<String> getAllCategories();
 }
