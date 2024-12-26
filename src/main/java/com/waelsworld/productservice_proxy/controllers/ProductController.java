@@ -1,6 +1,5 @@
 package com.waelsworld.productservice_proxy.controllers;
 
-import com.waelsworld.productservice_proxy.dtos.ProductDto;
 import com.waelsworld.productservice_proxy.models.Product;
 import com.waelsworld.productservice_proxy.services.IProductService;
 import org.springframework.http.HttpStatus;
@@ -53,18 +52,19 @@ public class ProductController {
      */
 
     @PostMapping()
-    public ResponseEntity<Product> addNewProduct(@RequestBody ProductDto productDto){
-        Product product = this.productService.addNewProduct(productDto);
-        return new ResponseEntity<>(product,HttpStatus.OK);
+    public ResponseEntity<Product> addNewProduct(@RequestBody Product product){
+        product = this.productService.addNewProduct(product);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @PutMapping("/{productId}")
-    public String updateProduct(@PathVariable("productId") long productId){
-        return "product updated with id: "+productId;
+    public ResponseEntity<Product> updateProduct(@PathVariable("productId") long productId, @RequestBody Product product){
+        product = this.productService.updateProduct(product, productId);
+        return new ResponseEntity<>(product,HttpStatus.OK);
     }
 
     @DeleteMapping("/{productId}")
-    public String deleteProduct(@PathVariable("productId") long productId){
-        return "product deleted with id: "+productId;
+    public ResponseEntity<String> deleteProduct(@PathVariable("productId") long productId){
+        return new ResponseEntity<>(this.productService.deleteProduct(productId), HttpStatus.OK);
     }
 }
