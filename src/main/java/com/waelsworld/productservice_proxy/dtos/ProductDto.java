@@ -1,5 +1,6 @@
 package com.waelsworld.productservice_proxy.dtos;
 
+import com.waelsworld.productservice_proxy.models.Category;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

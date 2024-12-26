@@ -1,6 +1,7 @@
 package com.waelsworld.productservice_proxy.util;
 
 import com.waelsworld.productservice_proxy.clients.fakestore.dto.FakeStoreProductDto;
+import com.waelsworld.productservice_proxy.models.Category;
 import com.waelsworld.productservice_proxy.models.Product;
 
 public class FakeStoreProductUtil {
@@ -13,7 +14,9 @@ public class FakeStoreProductUtil {
         product.setId(productDto.getId());
         product.setTitle(productDto.getTitle());
         product.setPrice(productDto.getPrice());
-        product.setCategories(productDto.getCategory());
+        Category category = new Category();
+        category.setName(productDto.getCategory());
+        product.setCategory(category);
         product.setDescription(productDto.getDescription());
         product.setImageUrl(productDto.getImage());
         return product;
@@ -24,7 +27,7 @@ public class FakeStoreProductUtil {
         fakeStoreProductDto.setId(product.getId());
         fakeStoreProductDto.setTitle(product.getTitle());
         fakeStoreProductDto.setPrice(product.getPrice());
-        fakeStoreProductDto.setCategory(product.getCategories());
+        fakeStoreProductDto.setCategory(product.getCategory().getName());
         fakeStoreProductDto.setDescription(product.getDescription());
         fakeStoreProductDto.setImage(product.getImageUrl());
         return fakeStoreProductDto;

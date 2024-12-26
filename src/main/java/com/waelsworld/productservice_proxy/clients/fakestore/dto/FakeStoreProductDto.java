@@ -1,6 +1,7 @@
 package com.waelsworld.productservice_proxy.clients.fakestore.dto;
 
 import com.waelsworld.productservice_proxy.dtos.RatingDto;
+import com.waelsworld.productservice_proxy.models.Category;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
