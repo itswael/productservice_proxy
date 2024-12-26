@@ -1,0 +1,6 @@
+-> mysql database integration, it needs the application.properties to have connection details and pom.xml to have dependencies.
+-> Dependencies include, JPA (repositories should extend/implement jpa) JPA helps in managing the CRUD operations related to database. while jdbc helps in database related operations, like connecting and executing queries against db that are managed and created by JPA based on the notations we have used in project.
+-> In this project baseModel contains the id, and as per the need, id should be auto incremented. so BaseModel.java has @MappedSuperclass, as all models extending it. For making it primary key @Id and for autoincrement @GeneratedValue(strategy = GenerationType.AUTO) is used on the instance variable id.
+-> we have two entities involved for now, product and category (models) and we want them to have a table created for them. so @Entity is used on the class declaration, and the cardinality is specified on each object utilized.
+-> SelfProductService.java is implemented to deal with the in store products for which my database will hold the details, and hence the repository interface extending the JPA interface is added to manage the db operations.
+-> product at fakestore contains String category, and product at our store contains category as entity, thus required changes for the conversion has been implemented.
