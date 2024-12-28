@@ -6,7 +6,7 @@ import com.waelsworld.productservice_proxy.models.Product;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
+//@Service
 public class FakeStoreCategoryService implements ICategoryService{
     FakeStoreClient fakeStoreClient;
     public FakeStoreCategoryService(FakeStoreClient fakeStoreClient) {
