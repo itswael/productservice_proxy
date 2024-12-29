@@ -27,7 +27,15 @@ public class ProductController {
 
     @GetMapping("")
     public ResponseEntity<List<Product>> getAllProducts(){
-        return new ResponseEntity<>(this.productService.getAllProducts(),HttpStatus.OK);
+        try {
+            List<Product> products = this.productService.getAllProducts();
+            if(products != null)
+                return new ResponseEntity<>(products, HttpStatus.OK);
+            else
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
     /*
     getting a string object returned from the service and returning to the caller.
@@ -38,7 +46,11 @@ public class ProductController {
             MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
             headers.add("Accept", "application/json");
             headers.add("Content-Type", "application/json");
+
             Product product = this.productService.getSingleProduct(productId);
+            if(product == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
             return new ResponseEntity<>(product,headers, HttpStatus.OK);
         }catch (Exception e){
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -53,14 +65,24 @@ public class ProductController {
 
     @PostMapping()
     public ResponseEntity<Product> addNewProduct(@RequestBody Product product){
-        product = this.productService.addNewProduct(product);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        try{
+            product = this.productService.addNewProduct(product);
+            if(product == null){
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @PutMapping("/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable("productId") long productId, @RequestBody Product product){
         try {
             product = this.productService.updateProduct(product, productId);
+            if(product == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
             return new ResponseEntity<>(product,HttpStatus.OK);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -69,12 +91,27 @@ public class ProductController {
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<String> deleteProduct(@PathVariable("productId") long productId){
-        return new ResponseEntity<>(this.productService.deleteProduct(productId), HttpStatus.OK);
+        try{
+            String message = this.productService.deleteProduct(productId);
+            if(message == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @GetMapping( "/categories")
     public ResponseEntity<List<String>> getAllCategories(){
-        List<String> categories = productService.getAllCategories();
-        return new ResponseEntity<>(categories, HttpStatus.OK);
+        try{
+            List<String> categories = this.productService.getAllCategories();
+            if(categories != null)
+                return new ResponseEntity<>(this.productService.getAllCategories(), HttpStatus.OK);
+            else
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }

@@ -17,12 +17,16 @@ public interface CategoryRepo extends JpaRepository<Category, Long> {
             "FROM Product p " +
             "WHERE p.category.name = :CategoryName")
     List<SelfProductDto> getProductsByCategoryName(@Param("CategoryName") String CategoryName);
+
     Category save(Category category);
+
     Category findByName(String name);
+
     Category findById(long id);
 
     @Query(value = "SELECT c.name FROM Category c WHERE c.id = :id")
     String findCategoryNameById(@Param("id") long id);
+
     @Query(value = "SELECT c.name FROM Category c WHERE c.id = ?1")
     String findCategoryNameByIdV1(long id);
 }

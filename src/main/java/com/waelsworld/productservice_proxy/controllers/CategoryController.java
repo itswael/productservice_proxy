@@ -21,7 +21,15 @@ public class CategoryController {
 
     @GetMapping("/{categoryName}")
     public ResponseEntity<List<Product>> getProductsInCategory(@PathVariable("categoryName") String categoryName){
-        List<Product> products = categoryService.getSingleCategory(categoryName);
-        return new ResponseEntity<>(products, HttpStatus.OK);
+        try{
+            List<Product> products = categoryService.getSingleCategory(categoryName);
+            if(products != null)
+                return new ResponseEntity<>(products, HttpStatus.OK);
+            else
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
     }
 }
