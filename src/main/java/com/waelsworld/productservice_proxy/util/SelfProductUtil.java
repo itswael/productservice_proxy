@@ -25,4 +25,23 @@ public class SelfProductUtil {
         }
         return products;
     }
+
+    public static Product getUpdatedProduct(Product existingProduct, Product updatedProduct){
+        if (updatedProduct.getTitle() != null) {
+            existingProduct.setTitle(updatedProduct.getTitle());
+        }
+        if (updatedProduct.getDescription() != null) {
+            existingProduct.setDescription(updatedProduct.getDescription());
+        }
+        if (updatedProduct.getPrice() >= 0) {
+            existingProduct.setPrice(updatedProduct.getPrice());
+        }
+        if (updatedProduct.getImageUrl() != null) {
+            existingProduct.setImageUrl(updatedProduct.getImageUrl());
+        }
+        if (updatedProduct.getCategory() != null) {
+            existingProduct.setCategory(updatedProduct.getCategory());
+        }
+        return existingProduct;
+    }
 }

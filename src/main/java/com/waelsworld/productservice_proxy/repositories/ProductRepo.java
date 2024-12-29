@@ -10,8 +10,6 @@ import java.util.List;
 public interface ProductRepo extends JpaRepository<Product, Long> {
     Product save(Product product);
 
-    //Product updateProductById(Product product, Long id);
-
     String deleteProductById(Long id);
 
     @Query(value = "SELECT new " +

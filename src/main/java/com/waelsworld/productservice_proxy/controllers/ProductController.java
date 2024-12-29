@@ -59,8 +59,12 @@ public class ProductController {
 
     @PutMapping("/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable("productId") long productId, @RequestBody Product product){
-        product = this.productService.updateProduct(product, productId);
-        return new ResponseEntity<>(product,HttpStatus.OK);
+        try {
+            product = this.productService.updateProduct(product, productId);
+            return new ResponseEntity<>(product,HttpStatus.OK);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @DeleteMapping("/{productId}")

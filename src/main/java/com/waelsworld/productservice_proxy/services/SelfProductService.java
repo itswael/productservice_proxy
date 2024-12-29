@@ -4,9 +4,11 @@ import com.waelsworld.productservice_proxy.clients.fakestore.dto.SelfCategoryDto
 import com.waelsworld.productservice_proxy.models.Product;
 import com.waelsworld.productservice_proxy.repositories.ProductRepo;
 import com.waelsworld.productservice_proxy.util.SelfCategoryUtil;
+import com.waelsworld.productservice_proxy.util.SelfProductUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SelfProductService implements IProductService {
@@ -30,8 +32,14 @@ public class SelfProductService implements IProductService {
 
     @Override
     public Product updateProduct(Product product, Long id) {
-        product = null;//this.productRepo.updateProductById(product, id);
-        return product;
+        Optional<Product> optionalProduct = productRepo.findById(id);
+
+        if (optionalProduct.isEmpty()) {
+            throw new IllegalArgumentException("Product with ID " + id + " not found.");
+        }
+
+        // Save method updates the product if id already exist
+        return productRepo.save(SelfProductUtil.getUpdatedProduct(optionalProduct.get(), product));
     }
 
     @Override
