@@ -1,7 +1,11 @@
 package com.waelsworld.productservice_proxy.controllers;
 
 import com.waelsworld.productservice_proxy.models.Product;
+import com.waelsworld.productservice_proxy.security.JwtObject;
+import com.waelsworld.productservice_proxy.security.TokenValidator;
 import com.waelsworld.productservice_proxy.services.IProductService;
+import jakarta.annotation.Nullable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -9,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 //this controller will always answer products
 @RestController
@@ -21,8 +26,10 @@ public class ProductController {
     so it can be instantiated via spring.
      */
     IProductService productService;
-    public ProductController(IProductService productService){
+    TokenValidator tokenValidator;
+    public ProductController(IProductService productService, TokenValidator tokenValidator) {
         this.productService = productService;
+        this.tokenValidator = tokenValidator;
     }
 
     @GetMapping("")
@@ -41,12 +48,24 @@ public class ProductController {
     getting a string object returned from the service and returning to the caller.
      */
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> getSingleProduct(@PathVariable("productId") Long productId){
+    public ResponseEntity<Product> getSingleProduct(@Nullable @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+                                                    @PathVariable("productId") Long productId){
         try {
+            if(authToken == null){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+            Optional<JwtObject> authObjectOptional = tokenValidator.validateToken(authToken);
+            if(authObjectOptional.isEmpty()){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+            JwtObject authObject = authObjectOptional.get();
+
             MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
             headers.add("Accept", "application/json");
             headers.add("Content-Type", "application/json");
 
+            // authObject can be passed to the service to get the user id and then check
+            // if the user has access to the product.
             Product product = this.productService.getSingleProduct(productId);
             if(product == null){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
