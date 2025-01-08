@@ -1,6 +1,9 @@
 package com.waelsworld.productservice_proxy.controllers;
 
+import com.waelsworld.productservice_proxy.dtos.ProductDto;
+import com.waelsworld.productservice_proxy.dtos.SearchRequestDto;
 import com.waelsworld.productservice_proxy.models.Product;
+import com.waelsworld.productservice_proxy.services.SearchService;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
