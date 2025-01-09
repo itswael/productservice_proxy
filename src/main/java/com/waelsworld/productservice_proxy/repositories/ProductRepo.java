@@ -20,6 +20,7 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
             "from Category c")
     List<SelfCategoryDto> findAllCategories();
 
-    Page<Product> findByTitleEquals(String title, Pageable pageable);
+    //Page<Product> findByTitleEquals(String title, Pageable pageable);
+    List<Product> findByTitleEquals(String title, Pageable pageable);
 
 }

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/search")
 public class SearchController {
@@ -17,19 +20,30 @@ public class SearchController {
     public SearchController(SearchService searchService) {
         this.searchService = searchService;
     }
+
     @PostMapping
-    public Page<Product> searchProducts(@RequestBody SearchRequestDto searchRequestDto) {
-//        List<Product> result = searchService.searchProducts(searchRequestDto.getQuery(),
-//                searchRequestDto.getPageNumber(), searchRequestDto.getSizeOfPage());
-//        List<ProductDto> shareableResult = new LinkedList<>();
-//        for(Product product : result) {
-//            shareableResult.add(getProduct(product));
-//        }
-//        return shareableResult;
-        Page<Product> result = searchService.searchProducts(searchRequestDto.getQuery(),
-                searchRequestDto.getPageNumber(), searchRequestDto.getSizeOfPage());
-        return result;
+    public List<ProductDto> searchProducts(@RequestBody SearchRequestDto searchRequestDto) {
+        List<Product> result = searchService.searchProducts(searchRequestDto.getQuery(),
+                searchRequestDto.getPageNumber(), searchRequestDto.getSizeOfPage(), searchRequestDto.getSortParamList());
+        List<ProductDto> shareableResult = new LinkedList<>();
+        for(Product product : result) {
+            shareableResult.add(getProduct(product));
+        }
+        return shareableResult;
     }
+//    @PostMapping
+//    public Page<Product> searchProducts(@RequestBody SearchRequestDto searchRequestDto) {
+////        List<Product> result = searchService.searchProducts(searchRequestDto.getQuery(),
+////                searchRequestDto.getPageNumber(), searchRequestDto.getSizeOfPage());
+////        List<ProductDto> shareableResult = new LinkedList<>();
+////        for(Product product : result) {
+////            shareableResult.add(getProduct(product));
+////        }
+////        return shareableResult;
+//        Page<Product> result = searchService.searchProducts(searchRequestDto.getQuery(),
+//                searchRequestDto.getPageNumber(), searchRequestDto.getSizeOfPage());
+//        return result;
+//    }
     private ProductDto getProduct(Product p) {
         ProductDto product = new ProductDto();
         product.setId(p.getId());

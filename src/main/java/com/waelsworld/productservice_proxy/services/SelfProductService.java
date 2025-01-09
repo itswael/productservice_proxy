@@ -2,6 +2,7 @@ package com.waelsworld.productservice_proxy.services;
 
 import com.waelsworld.productservice_proxy.clients.fakestore.dto.SelfCategoryDto;
 import com.waelsworld.productservice_proxy.models.Product;
+import com.waelsworld.productservice_proxy.repositories.ProductElasticSearchRepo;
 import com.waelsworld.productservice_proxy.repositories.ProductRepo;
 import com.waelsworld.productservice_proxy.util.SelfCategoryUtil;
 import com.waelsworld.productservice_proxy.util.SelfProductUtil;
@@ -13,8 +14,11 @@ import java.util.Optional;
 @Service
 public class SelfProductService implements IProductService {
     ProductRepo productRepo;
-    public SelfProductService(ProductRepo productRepo) {
+    ProductElasticSearchRepo productElasticSearchRepo;
+
+    public SelfProductService(ProductRepo productRepo, ProductElasticSearchRepo productElasticSearchRepo) {
         this.productRepo = productRepo;
+        this.productElasticSearchRepo = productElasticSearchRepo;
     }
     @Override
     public List<Product> getAllProducts() {
@@ -27,6 +31,7 @@ public class SelfProductService implements IProductService {
     @Override
     public Product addNewProduct(Product product) {
         this.productRepo.save(product);
+        this.productElasticSearchRepo.save(product);
         return product;
     }
 
