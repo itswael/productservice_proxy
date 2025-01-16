@@ -74,6 +74,7 @@ public SearchResponseDto search(@RequestParam("query") String query,
                                           @RequestParam("pageSize") int pageSize,
                                           @RequestParam("sortingAttribute") String sortingAttribute
     ) {
+    return null;
     }
 
     private ProductDto getProduct(Product p) {
